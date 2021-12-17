@@ -36,4 +36,10 @@ class ProductRepository extends QueryBuilder
         AND id != $id ORDER BY RAND() LIMIT 6";
         return $this->executeQuery($sql);
     }
+
+    public function getByCategory(int $id_categoria)
+    {
+        $sql = "SELECT * FROM $this->table WHERE id_categoria = $id_categoria";
+        return $this->executeQuery($sql);
+    }
 }
