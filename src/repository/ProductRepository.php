@@ -23,4 +23,10 @@ class ProductRepository extends QueryBuilder
         $sql = "SELECT * FROM $this->table WHERE destacado = 1";
         return $this->executeQuery($sql);
     }
+
+    public function getNovedades()
+    {
+        $sql = "SELECT * FROM $this->table ORDER BY fecha DESC LIMIT 6";
+        return $this->executeQuery($sql);
+    }
 }

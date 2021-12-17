@@ -21,10 +21,11 @@ class PageController
         $repositorio = new ProductRepository();
         $carrusel = $repositorio->getCarrusel();
         $destacados = $repositorio->getDestacados();
+        $novedades = $repositorio->getNovedades();
         return $this->container->renderer->render(
             $response,
             "index.view.php",
-            compact('title', 'carrusel', 'destacados')
+            compact('title', 'carrusel', 'destacados', 'novedades')
         );
     }
 }
