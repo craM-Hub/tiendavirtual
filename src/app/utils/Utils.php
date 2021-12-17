@@ -1,24 +1,30 @@
 <?php
+
 namespace ProyectoWeb\app\utils;
-class Utils {
-    public static function esOpcionMenuActiva(string $option): bool{
-        if (strpos($_SERVER["REQUEST_URI"], "/". $option) === 0 ){
+
+class Utils
+{
+    public static function esOpcionMenuActiva(string $option): bool
+    {
+        if (strpos($_SERVER["REQUEST_URI"], "/" . $option) === 0) {
             return true;
-        }elseif ("/" === $_SERVER["REQUEST_URI"] && ("index" == $option)){
+        } elseif ("/" === $_SERVER["REQUEST_URI"] && ("index" == $option)) {
             //tal vez hayamos entrado de forma directa, sin index.php
             return true;
-        }else   
+        } else
             return false;
     }
-    public static function  existeOpcionMenuActivaEnArray(array $options): bool{
-        foreach ($options as $option){
+    public static function  existeOpcionMenuActivaEnArray(array $options): bool
+    {
+        foreach ($options as $option) {
             if (self::esOpcionMenuActiva($option)) {
                 return true;
             }
         }
         return false;
     }
-    public static function sanitizeInput(string $data): string {
+    public static function sanitizeInput(string $data): string
+    {
         $data = trim($data);
         //Quitar las comillas escapadas \' y \ ""
         $data = stripslashes($data);
@@ -32,9 +38,10 @@ class Utils {
      * @param array $asociados
      * @return array
      */
-    public static function getAsociados(array $asociados): array{
+    public static function getAsociados(array $asociados): array
+    {
         shuffle($asociados);
-        return array_slice($asociados,0, 3);
+        return array_slice($asociados, 0, 3);
     }
 
     /**
@@ -43,7 +50,13 @@ class Utils {
      * @param string $imgSrc
      * @return string
      */
-    public static function generateValidHTML5src(string $imgSrc): string{
+    public static function generateValidHTML5src(string $imgSrc): string
+    {
         return str_replace(' ', '%20', $imgSrc);
+    }
+
+    public static function encodeURI(string $uri): string
+    {
+        return rawurlencode(strtolower(str_replace(' ', '-', $uri)));
     }
 }

@@ -29,4 +29,11 @@ class ProductRepository extends QueryBuilder
         $sql = "SELECT * FROM $this->table ORDER BY fecha DESC LIMIT 6";
         return $this->executeQuery($sql);
     }
+
+    public function getRelacionados(int $id, int $id_categoria)
+    {
+        $sql = "SELECT * FROM $this->table WHERE id_categoria = $id_categoria
+        AND id != $id ORDER BY RAND() LIMIT 6";
+        return $this->executeQuery($sql);
+    }
 }
