@@ -13,7 +13,7 @@
         <tbody>
             <?php if ($cart->isEmpty()) : ?>
             <tr>
-                <td colspan='5'>
+                <td colspan='6'>
                     <div class='alert alert-danger'>Su carro está vacío.</div>
                 </td>
             </tr>
@@ -23,6 +23,8 @@
                 foreach ($productos as $producto) :
                     $total += $cart->getCart()[$producto->getId()] * $producto->getPrecio();
                 ?>
+            <td><a href="<?= $router->pathFor('cart-delete', ['id' => $producto->getId()]) ?>"
+                    onclick="return confirmDeleteItem();"><span class='fa fa-close'></span></a></td>
             <tr>
                 <th scope="row"><?= $i++; ?></th>
                 <td><a
@@ -37,7 +39,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="5" style="text-align:right;">
+                <td colspan="6" style="text-align:right;">
                     <b>Total: <?= number_format($total, 2, ',', ' ') ?> </b>
                 </td>
             </tr>
