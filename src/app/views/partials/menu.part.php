@@ -1,4 +1,3 @@
-
 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav">
         <li>
@@ -12,9 +11,10 @@
         </li>
     </ul>
     <ul class="nav navbar-nav  navbar-right">
-        <?php if (isset($_SESSION['username'])): ?>
+        <?php if (isset($_SESSION['username'])) : ?>
         <li>
-            <a href="/logout"><?=$_SESSION['username']?> <span title='Cerrar Sesión' class='fa fa-sign-out'></span></a>
+            <a href="/logout"><?= $_SESSION['username'] ?> <span title='Cerrar Sesión'
+                    class='fa fa-sign-out'></span></a>
         </li>
         <?php else : ?>
         <li>
@@ -23,7 +23,8 @@
         <?php endif ?>
 
         <li>
-            <a href=''><span title='Carrito' class='fa fa-shopping-cart'></span> <span class="badge">0</span></a>
+            <a href='<?= $router->pathFor('cart') ?>'><span title='Carrito' class='fa fa-shopping-cart'></span> <span
+                    class="badge"><?= $cart->howMany() ?></span></a>
         </li>
     </ul>
 </div>
