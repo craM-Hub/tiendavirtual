@@ -91,4 +91,34 @@ class CartController
             compact('title', 'withCategories')
         );
     }
+
+    public function addJSON($request, $response, $args)
+    {
+        extract($args);
+        $quantity = 1; //Por add sólo añadimos 1 si no está ya en el carro
+        $repositorio = new ProductRepository;
+        try {
+            //Añadimos al carrito
+            $productoActual = $repositorio->findById($id);
+            if (!$this->container->cart->itemExists($id))
+                $this->container->cart->addItem($id, $quantity);
+        } catch (NotFoundException $nfe) {
+            return json_encode([]);
+        }
+        //Obtenemos el total del carro
+        $productos = $repositorio->findAll();
+        $total = 0;
+        foreach ($productos as $producto) {
+            $total += $this->container->cart->getItemCount($producto->getId()) * $producto->getPrecio();
+        }
+
+        //Devolvemos los datos formateados como json
+        return json_encode([
+            "producto" => $productoActual->toArray(),
+            "itemCount" => $this->container->cart->getItemCount($id),
+            "totalCarro" => number_format($total, 2, ",", "."),
+            "rutaImagen" => \ProyectoWeb\entity\Product::RUTA_IMAGENES,
+            "totalItems" => $this->container->cart->howMany($id)
+        ]);
+    }
 }
