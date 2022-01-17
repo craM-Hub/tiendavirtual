@@ -45,4 +45,5 @@ $app->get('/cart/delete/{id:[0-9]+}', CartController::class . ':delete')->setNam
 $app->get('/cart/checkout', CartController::class . ':checkout')->setName('cart-checkout');
 $app->get('/cart/thankyou', CartController::class . ':thankyou')->setName('cart-thankyou');
 $app->get('/cart/add/json/{id:[0-9]+}[/{quantity:[0-9]+}]', CartController::class . ':addJSON')->setName("cart-add-json");
+$app->post('/cart/update/json/{id:[0-9]+}/[{quantity:[0-9]+}]', CartController::class . ':update')->setName("cart-update-json");
 $app->run();

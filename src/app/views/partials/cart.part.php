@@ -5,8 +5,8 @@
             <tr>
                 <th>#</th>
                 <th>Producto</th>
-                <th>Cantidad</th>
                 <th>Precio</th>
+                <th>Cantidad</th>
                 <th>Total</th>
             </tr>
         </thead>

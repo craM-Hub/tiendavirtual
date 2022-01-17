@@ -63,6 +63,21 @@ function confirmDeleteItem() {
 					cartElements.cantidad.val(jData.itemCount);
 					mask.hide();
 					infoCarro.modal();
+					//Poner un listener en el evento clic del botón Actualizar, eliminando previamente el anterior evento
+					cartElements.updateButton.unbind();
+					cartElements.updateButton.click(function (event) {
+						event.preventDefault();
+						var hrefUpdate = '/cart/update/json/' + id;
+						//Hacer un post a update con la cantidad introducida por el usuario
+						var hrefUpdateQuantity =
+							hrefUpdate + '/' + cartElements.cantidad.val();
+						var actualizar = $.post(hrefUpdateQuantity, {}, function (data) {
+							jData = JSON.parse(data);
+							//Actualizar los datos
+							cartElements.total.html(jData.totalCarro);
+							cuantosEl.html(jData.cuantos);
+						});
+					});
 				}, 500);
 			}).fail(function () {
 				alert('error');

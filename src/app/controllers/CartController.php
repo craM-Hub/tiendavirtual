@@ -121,4 +121,29 @@ class CartController
             "totalItems" => $this->container->cart->howMany($id)
         ]);
     }
+
+    public function update($request, $response, $args)
+    {
+        extract($args);
+        $quantity ??= 1; // Por defecto es 1
+        $repositorio = new ProductRepository;
+        try {
+            //Añadimos al carrito
+            $productoActual = $repositorio->findById($id);
+            $this->container->cart->addItem($id, $quantity);
+        } catch (NotFoundException $nfe) {
+            return json_encode([]);
+        }
+        //Obtenemos el total del carro
+        $productos = $repositorio->findAll();
+        $total = 0;
+        foreach ($productos as $producto) {
+            $total += $this->container->cart->getItemCount($producto->getId()) * $producto->getPrecio();
+        }
+
+        //Devolvemos los datos formateados como json
+        return json_encode([
+            "totalCarro" => number_format($total, 2, ",", "."),
+        ]);
+    }
 }
