@@ -1,5 +1,5 @@
 <div class="row carro">
-    <h2 class="subtitle" style="margin:0;">Carrito de la compra</h2>
+    <h2 class="subtitle" style="margin:0;"><?= $header; ?></h2>
     <table class="table">
         <thead>
             <tr>
@@ -44,12 +44,58 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="3"><a class="btn btn-danger" href="#">Finalizar compra</a></td>
+                <?php if (!$checkout) : ?>
+
+                + <td colspan="3"><a class="btn btn-danger" href="<?= $router->pathFor('cart-checkout') ?>">Finalizar
+                        compra</a></td>
                 <td colspan="2"><a class="btn btn-danger" href="<?= $router->pathFor('cart-empty') ?>"
                         onclick="return confirmEmptyCart();">Vaciar
                         Carrito</a></td>
             </tr>
+            <?php else : ?>
+            <td colspan="6">
+                <div id="paypal-button-container"></div>
+            </td>
+            <?php endif ?>
         </tfoot>
         <?php endif ?>
     </table>
 </div>
+<?php if ($checkout) : ?>
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script>
+paypal.Button.render({
+    env: 'sandbox', // sandbox | production
+    // PayPal Client IDs - replace with your own
+    // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+    client: {
+        sandbox: 'AURtFahgo3cuV-8J35gOhzh0AhTk36fnkHRkuGs-ZBiDoRdzd4NGvRDFFvzkCqmoU3puoZ3FOyS2zkDX',
+        production: '<insert production client id>'
+    },
+    // Show the buyer a 'Pay Now' button in the checkout flow
+    commit: true,
+    // payment() is called when the button is clicked
+    payment: function(data, actions) {
+        // Make a call to the REST api to create the payment
+        return actions.payment.create({
+            payment: {
+                transactions: [{
+                    amount: {
+                        total: '<?= $total ?>',
+                        currency: 'EUR'
+                    }
+                }]
+            }
+        });
+    },
+    // onAuthorize() is called when the buyer approves the payment
+    onAuthorize: function(data, actions) {
+        // Make a call to the REST api to execute the payment
+        return actions.payment.execute().then(function() {
+            window.alert('Pago Completado!');
+            document.location.href = '<?= $router->pathFor('cart-thankyou') ?>';
+        });
+    }
+}, '#paypal-button-container');
+</script>
+<?php endif ?>
